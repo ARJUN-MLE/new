@@ -2,11 +2,60 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const TEST_DURATION = 30
-const PASSAGES = [
-  'Small steps compound into remarkable progress. Find your rhythm, stay curious, and let the next keystroke be enough.',
-  'The best tools disappear into the work. Clear ideas move quickly when every detail has room to breathe.',
-  'Good writing is patient thinking made visible. Take a breath, choose the right word, and keep moving forward.',
+const WORDS = [
+  'the', 'a', 'an', 'and', 'or', 'but', 'so', 'because', 'since', 'although', 'though', 'while', 'if', 'else', 'then', 'than', 'that', 'this', 'these',
+  'those', 'to', 'of', 'in', 'on', 'at', 'by', 'for', 'with', 'about', 'into', 'onto', 'from', 'over', 'under', 'above', 'below', 'between', 'among', 
+  'before', 'after', 'during', 'until', 'within', 'without', 'through', 'across', 'around', 'near', 'is', 'was', 'were', 'be', 'been', 'being', 'am',
+  'are', 'do', 'does', 'did', 'done', 'doing', 'have', 'has', 'had', 'having', 'will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might',
+  'must', 'ought', 'not', 'no', 'yes', 'yet', 'very', 'just', 'only', 'also', 'too', 'either', 'neither', 'both', 'each', 'every', 'any', 'some', 
+  'few', 'many', 'much', 'more', 'most', 'less', 'least', 'one', 'two', 'three', 'first', 'second', 'third', 'next', 'last', 'new', 'old', 'same',
+  'other', 'another', 'such', 'own', 'whose', 'who', 'whom', 'which', 'what', 'where', 'when', 'why', 'how' , 'quick', 'slow', 'fast', 'bright',
+  'dark', 'light', 'heavy', 'soft', 'hard', 'strong', 'weak', 'big', 'small', 'tiny', 'huge', 'short', 'long', 'tall', 'wide', 'narrow', 'deep',
+  'shallow', 'early', 'late', 'young', 'old', 'new', 'ancient', 'modern', 'future', 'past', 'present', 'happy', 'sad', 'angry', 'calm', 'peaceful', 
+  'violent', 'kind', 'cruel', 'brave', 'fearful', 'smart', 'dumb', 'wise', 'foolish', 'rich', 'poor', 'clean', 'dirty', 'hot', 'cold', 'warm',
+  'cool', 'dry', 'wet', 'rainy', 'snowy', 'sunny', 'cloudy', 'stormy', 'windy', 'foggy', 'icy', 'fire', 'water', 'earth', 'air', 'sky', 'sea', 
+  'river', 'lake', 'pond', 'mountain', 'hill', 'valley', 'forest', 'jungle', 'desert', 'island', 'beach', 'coast', 'shore', 'field', 'farm',
+  'garden', 'park', 'road', 'street', 'lane', 'alley', 'bridge', 'tunnel', 'house', 'home', 'room', 'hall', 'kitchen', 'bathroom', 'bedroom',
+  'office', 'school', 'college', 'university', 'library', 'hospital', 'shop', 'store', 'market', 'mall', 'bank', 'hotel', 'restaurant', 'cafe',
+  'bar', 'club', 'stadium', 'theater', 'cinema', 'museum', 'temple', 'church', 'mosque', 'palace', 'castle', 'tower', 'wall', 'gate', 'door',
+  'window', 'roof', 'floor', 'ceiling', 'chair', 'table', 'sofa', 'bed', 'fan', 'lamp', 'light', 'bulb', 'switch', 'wire', 'cable', 'plug',
+  'socket', 'battery', 'phone', 'mobile', 'tablet', 'laptop', 'computer', 'keyboard', 'mouse', 'screen', 'monitor', 'printer', 'scanner', 
+  'camera', 'speaker', 'microphone', 'radio', 'television', 'clock', 'watch', 'calendar', 'pen', 'pencil', 'book', 'paper', 'notebook', 
+  'diary', 'letter', 'envelope', 'stamp', 'card', 'ticket', 'coin', 'money', 'cash', 'wallet', 'purse', 'bag', 'box', 'bottle', 'glass',
+  'cup', 'plate', 'spoon', 'fork', 'knife', 'food', 'drink', 'water', 'juice', 'milk', 'tea', 'coffee', 'bread', 'rice', 'wheat', 'fruit',
+  'apple', 'banana', 'orange', 'grape', 'mango', 'pineapple', 'pear', 'peach', 'plum', 'berry', 'strawberry', 'blueberry', 'raspberry',
+  'vegetable', 'potato', 'tomato', 'onion', 'carrot', 'cabbage', 'spinach', 'beans', 'peas', 'corn', 'meat', 'fish', 'egg', 'chicken',
+  'beef', 'mutton', 'pork', 'goat', 'duck', 'turkey', 'salt', 'sugar', 'pepper', 'spice', 'oil', 'butter', 'cheese', 'cream', 'cake',
+  'sweet', 'chocolate', 'icecream', 'cookie', 'biscuit', 'snack', 'meal', 'breakfast', 'lunch', 'dinner', 'supper', 'feast', 'party', 
+  'festival', 'event', 'function', 'meeting', 'conference', 'seminar', 'workshop', 'lecture', 'speech', 'talk', 'discussion', 'debate',
+  'argument', 'agreement', 'disagreement', 'decision', 'choice', 'option', 'plan', 'project', 'task', 'job', 'work', 'career', 'business', 
+  'company', 'firm', 'office', 'team', 'group', 'club', 'society', 'community', 'village', 'town', 'city', 'country', 'nation', 'world', 'earth', 
+  'globe', 'universe', 'galaxy', 'star', 'planet', 'moon', 'sun', 'space', 'rocket', 'satellite', 'astronaut', 'mission', 'science', 'math', 
+  'physics', 'chemistry', 'biology', 'history', 'geography', 'economics', 'politics', 'law', 'art', 'music', 'dance', 'song', 'movie', 'film', 
+  'drama', 'comedy', 'tragedy', 'poem', 'story', 'novel', 'character', 'hero', 'villain', 'friend', 'enemy', 'family', 'father', 'mother', 'brother', 
+  'sister', 'uncle', 'aunt', 'cousin', 'child', 'baby', 'man', 'woman', 'boy', 'girl', 'student', 'teacher', 'doctor', 'nurse', 'engineer', 
+  'scientist', 'artist', 'actor', 'singer', 'dancer', 'player', 'driver', 'pilot', 'soldier', 'police', 'judge', 'lawyer', 'farmer', 'worker', 
+  'manager', 'leader', 'king', 'queen', 'prince', 'princess', 'god', 'goddess', 'angel', 'devil', 'spirit', 'ghost', 'monster', 'animal', 'dog', 
+  'cat', 'cow', 'horse', 'sheep', 'goat', 'pig', 'lion', 'tiger', 'bear', 'wolf', 'fox', 'deer', 'elephant', 'camel', 'zebra', 'giraffe', 'monkey', 
+  'ape', 'bird', 'eagle', 'sparrow', 'parrot', 'crow', 'peacock', 'hen', 'duck', 'fish', 'whale', 'shark', 'dolphin', 'snake', 'frog', 'lizard', 
+  'insect', 'bee', 'ant', 'fly', 'mosquito', 'butterfly', 'spider', 'worm', 'bug', 'virus', 'bacteria', 'plant', 'tree', 'flower', 'leaf', 'root', 
+  'stem', 'branch', 'fruit', 'seed', 'grass', 'crop', 'weed', 'rose', 'lotus', 'lily', 'sunflower', 'jasmine', 'orchid', 'tulip', 'daffodil', 
+  'marigold', 'moneyplant', 'bamboo', 'mango', 'banana', 'appletree', 'coconut', 'palm', 'pine', 'maple', 'birch', 'willow', 
+  'poplar', 'date', 'fig', 'olive', 'almond', 'cashew', 'peanut', 'walnut', 'hazelnut', 'pistachio', 'cherry', 'grapevine', 'melon', 'watermelon', 
+  'pumpkin', 'cucumber', 'radish', 'turnip', 'beetroot', 'ginger', 'garlic', 'chili', 'pepper', 'mint', 'coriander', 'curry', 
+  'basil', 'sage', 'rosemary', 'nutmeg', 'vanilla', 'coffee', 'tea', 'soda', 
+  'juice', 
 ]
+
+function generatePassage(wordCount = 45) {
+  const words: string[] = []
+
+  for (let i = 0; i < wordCount; i++) {
+    words.push(WORDS[Math.floor(Math.random() * WORDS.length)])
+  }
+
+  return words.join(' ')
+}
 
 type Theme = 'light' | 'dark'
 
@@ -25,13 +74,15 @@ function Icon({ name }: { name: 'sun' | 'moon' | 'volume' | 'mute' | 'refresh' }
 function App() {
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('typely-theme') as Theme) || 'light')
   const [soundEnabled, setSoundEnabled] = useState(false)
-  const [passage, setPassage] = useState(PASSAGES[0])
+ const [passage, setPassage] = useState(() => generatePassage())
   const [typed, setTyped] = useState('')
   const [elapsed, setElapsed] = useState(0)
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const audioContextRef = useRef<AudioContext | null>(null)
+const passageRef = useRef<HTMLDivElement>(null)
+const typingCardRef = useRef<HTMLDivElement>(null)
+const audioContextRef = useRef<AudioContext | null>(null)
 
   const secondsLeft = Math.max(TEST_DURATION - elapsed, 0)
   const correctCharacters = [...typed].filter((character, index) => character === passage[index]).length
@@ -63,44 +114,92 @@ function App() {
     if (finished) playTone(520, 0.18, 'sine')
   }, [finished])
 
-  function playTone(frequency: number, duration: number, type: OscillatorType = 'sine') {
-    if (!soundEnabled) return
-    const context = audioContextRef.current ?? new AudioContext()
-    audioContextRef.current = context
-    const oscillator = context.createOscillator()
-    const gain = context.createGain()
-    oscillator.type = type
-    oscillator.frequency.value = frequency
-    gain.gain.setValueAtTime(0.025, context.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration)
-    oscillator.connect(gain).connect(context.destination)
-    oscillator.start()
-    oscillator.stop(context.currentTime + duration)
-  }
 
-  function restart() {
-    const nextPassage = PASSAGES[Math.floor(Math.random() * PASSAGES.length)]
-    setPassage(nextPassage)
-    setTyped('')
-    setElapsed(0)
-    setStarted(false)
-    setFinished(false)
-    window.setTimeout(() => inputRef.current?.focus(), 0)
+  useEffect(() => {
+    const passageElement = passageRef.current
+    const typingCard = typingCardRef.current
+
+    if (!passageElement || !typingCard) return
+
+    passageElement.style.transform = 'translateY(0)'
+
+    const currentCharacter = passageElement.querySelector('.current') as HTMLElement | null
+
+    if (!currentCharacter) return
+
+    const cardRect = typingCard.getBoundingClientRect()
+    const currentRect = currentCharacter.getBoundingClientRect()
+    const bottomPadding = 42
+
+    if (currentRect.bottom > cardRect.bottom - bottomPadding) {
+      const shift = currentRect.bottom - (cardRect.bottom - bottomPadding)
+      passageElement.style.transform = `translateY(-${shift}px)`
+    }
+  }, [typed])
+
+
+
+  function playTone(frequency: number, duration: number, type: OscillatorType = 'sine') {
+  if (!soundEnabled) return
+
+  const context = audioContextRef.current ?? new AudioContext()
+  audioContextRef.current = context
+
+  const oscillator = context.createOscillator()
+  const gain = context.createGain()
+
+  oscillator.type = type
+  oscillator.frequency.value = frequency
+
+  gain.gain.setValueAtTime(0.04, context.currentTime)
+  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration)
+
+  oscillator.connect(gain).connect(context.destination)
+
+  oscillator.start()
+  oscillator.stop(context.currentTime + duration)
+}
+
+function playKeySound(correct: boolean) {
+  if (correct) {
+    playTone(520, 0.025, 'square')
+  } else {
+    playTone(120, 0.10, 'sawtooth')
   }
+}
+
+function restart() {
+  const nextPassage = generatePassage()
+  setPassage(nextPassage)
+  setTyped('')
+  setElapsed(0)
+  setStarted(false)
+  setFinished(false)
+  window.setTimeout(() => inputRef.current?.focus(), 0)
+}
 
   function handleChange(value: string) {
-    if (finished) return
-    const nextValue = value.slice(0, passage.length)
-    if (!started && nextValue) setStarted(true)
-    const currentIndex = nextValue.length - 1
-    if (nextValue && nextValue[currentIndex] !== passage[currentIndex]) playTone(150, 0.06, 'square')
-    else if (nextValue) playTone(330, 0.035)
-    setTyped(nextValue)
-    if (nextValue.length === passage.length) {
-      setFinished(true)
-      setStarted(false)
-    }
+  if (finished) return
+
+  const nextValue = value.slice(0, passage.length)
+
+  if (!started && nextValue) setStarted(true)
+
+  const currentIndex = nextValue.length - 1
+
+  if (nextValue) {
+    const isCorrect = nextValue[currentIndex] === passage[currentIndex]
+    playKeySound(isCorrect)
   }
+
+  setTyped(nextValue)
+
+  if (nextValue.length === passage.length) {
+    setFinished(true)
+    setStarted(false)
+  }
+}
+  
 
   return (
     <main className="app-shell" data-theme={theme}>
@@ -134,8 +233,12 @@ function App() {
           </section>
         ) : (
           <>
-            <div className="typing-card" onClick={() => inputRef.current?.focus()}>
-              <div className="passage" aria-hidden="true">
+            <div
+  ref={typingCardRef}
+  className="typing-card"
+  onClick={() => inputRef.current?.focus()}
+>
+              <div ref={passageRef} className="passage" aria-hidden="true">
                 {[...passage].map((character, index) => {
                   const typedCharacter = typed[index]
                   const status = typedCharacter === undefined ? index === typed.length ? 'current' : 'pending' : typedCharacter === character ? 'correct' : 'incorrect'
