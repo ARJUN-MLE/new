@@ -47,7 +47,8 @@ const WORDS = [
   'juice', 
 ]
 
-function generatePassage(wordCount = 45) {
+function generatePassage(wordCount = 50
+) {
   const words: string[] = []
 
   for (let i = 0; i < wordCount; i++) {
