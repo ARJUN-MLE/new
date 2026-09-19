@@ -21,7 +21,19 @@ h1 { margin: 21px 0 7px; color: var(--ink); font-size: clamp(2.7rem, 6vw, 4.5rem
 .subtitle { color: var(--muted); font-size: .97rem; }
 .typing-card { position: relative; max-width: 900px; min-height: 214px; margin: 53px auto 0; padding: 39px 42px; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; color: var(--faint); background: color-mix(in srgb, var(--surface) 82%, transparent); box-shadow: var(--shadow); text-align: left; transition: border-color .2s, box-shadow .2s; }
 .typing-card:focus-within { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 22px 70px color-mix(in srgb, var(--accent) 9%, transparent); }
-.passage { position: relative; z-index: 1; font-family: 'DM Mono', monospace; font-size: clamp(1rem, 2vw, 1.27rem); line-height: 2; letter-spacing: -.025em; user-select: none; }
+.passage {
+  position: relative;
+  z-index: 1;
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1rem, 2vw, 1.27rem);
+  line-height: 2;
+  letter-spacing: -.025em;
+  user-select: none;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
 .passage span { transition: color .15s, background .15s; }
 .passage .correct { color: var(--correct); }
 .passage .incorrect { color: #d3544f; background: #f9d8d3; border-radius: 3px; }
