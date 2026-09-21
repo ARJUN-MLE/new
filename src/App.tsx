@@ -43,7 +43,9 @@ const WORDS = [
   'marigold', 'moneyplant', 'bamboo', 'mango', 'banana', 'appletree', 'coconut', 'palm', 'pine', 'maple', 'birch', 'willow', 
   'poplar', 'date', 'fig', 'olive', 'almond', 'cashew', 'peanut', 'walnut', 'hazelnut', 'pistachio', 'cherry', 'grapevine', 'melon', 'watermelon', 
   'pumpkin', 'cucumber', 'radish', 'turnip', 'beetroot', 'ginger', 'garlic', 'chili', 'pepper', 'mint', 'coriander', 'curry', 
-  'basil', 'sage', 'rosemary', 'nutmeg', 'vanilla', 'coffee', 'tea', 'soda', 
+  'basil', 'sage', 'rosemary', 'nutmeg', 'vanilla', 'coffee', 'tea', 'soda', 'clean', 'dirty', 'fresh', 'stale', 'hot', 'cold', 'warm', 'cool', 
+  'spicy', 'sweet', 'sour', 'bitter', 'women', 'men', 'boys', 'girls', 'children', 'babies', 'adults', 'elders', 'friends', 'enemies', 'neighbors',
+   'strangers', 'tourists',
   'juice', 
 ]
 
@@ -240,11 +242,42 @@ function restart() {
   onClick={() => inputRef.current?.focus()}
 >
               <div ref={passageRef} className="passage" aria-hidden="true">
-                {[...passage].map((character, index) => {
-                  const typedCharacter = typed[index]
-                  const status = typedCharacter === undefined ? index === typed.length ? 'current' : 'pending' : typedCharacter === character ? 'correct' : 'incorrect'
-                  return <span className={status} key={`${character}-${index}`}>{character === ' ' ? '\u00a0' : character}</span>
-                })}
+                {passage.split(' ').map((word, wordIndex) => {
+                  const wordStart = passage
+                    .split(' ')
+                    .slice(0, wordIndex)
+                    .reduce((total, item) => total + item.length + 1, 0)
+
+                return (
+                   <span className="word" key={`${word}-${wordIndex}`}>
+                     {[...word].map((character, characterIndex) => {
+                       const index = wordStart + characterIndex
+                       const typedCharacter = typed[index]
+
+                       const status =
+                         typedCharacter === undefined
+                           ? index === typed.length
+                             ? 'current'
+                             : 'pending'
+                           : typedCharacter === character
+                             ? 'correct'
+                             : 'incorrect'
+
+                       return (
+                         <span className={status} key={`${character}-${index}`}>
+                           {character}
+                         </span>
+                       )
+                    })}
+
+                    {wordIndex < passage.split(' ').length - 1 && (
+                      <span className="space">
+                       {'\u00a0'}
+                     </span>
+                 )}
+               </span>
+              )
+            })}
               </div>
               <textarea ref={inputRef} value={typed} onChange={(event) => handleChange(event.target.value)} aria-label="Type the displayed passage" autoCapitalize="off" autoCorrect="off" spellCheck="false" />
               {!typed && <span className="input-hint">Click here and start typing<span className="shortcut">⌘ ↵</span></span>}

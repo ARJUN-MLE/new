@@ -35,6 +35,12 @@ h1 { margin: 21px 0 7px; color: var(--ink); font-size: clamp(2.7rem, 6vw, 4.5rem
   word-break: normal;
 }
 .passage span { transition: color .15s, background .15s; }
+
+.passage .word {
+  white-space: nowrap;
+}
+
+
 .passage .correct { color: var(--correct); }
 .passage .incorrect { color: #d3544f; background: #f9d8d3; border-radius: 3px; }
 .app-shell[data-theme='dark'] .passage .incorrect { color: #ffaf9b; background: #51302d; }
